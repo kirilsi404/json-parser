@@ -1,0 +1,17 @@
+
+
+
+                     [ JsonObject (Корен) ]
+                    /          |           \
+         "student"          "profile"       "academic"
+            /                  |                    \
+     [JsonString]        [JsonObject]                 [JsonObject]
+   ("Kiril")       /        \                   /        \
+             "faculty_number"  "is_first_year"       "courses"   "grades"
+                   /                \                   /            \
+            [JsonNumber]        [JsonBool]        [JsonArray]    [JsonArray]
+               (12345)            (true)           /       \      /       \
+                                                 [0]      [1]   [0]      [1]
+                                                 /          \    /         \
+                                           [JsonString]  [JsonString] [JsonNumber] [JsonNumber]
+                                              ("UP")       ("OOP")       (6)          (6)

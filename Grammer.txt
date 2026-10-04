@@ -1,0 +1,14 @@
+<json_document>  -> <object> | <array>
+
+<json_value>     -> <object> | <array> | <string> | <number> | <boolean> | "null"
+
+<object>         -> "{" "}" | "{" <pair_list> "}"
+<pair_list>      -> <pair> | <pair> "," <pair_list>
+<pair>           -> <string> ":" <json_value>
+
+<array>          -> "[" "]" | "[" <value_list> "]"
+<value_list>     -> <json_value> | <json_value> "," <value_list>
+
+<string>         -> '"' <текст_без_кавички> '"'
+<number>         -> <валидно реално число>
+<boolean>        -> "true" | "false"
