@@ -6,7 +6,6 @@
 #include <stdexcept>
 #include <cctype>
 
-// Помощна функция за валидиране и преобразуване на ключ в индекс на масив
 static bool parseIndex(const std::string& key, size_t& index) {
     if (key.empty()) return false;
     for (char c : key) {
@@ -107,7 +106,6 @@ void JsonArray::createPath(std::vector<std::string> path, JsonValue* newValue, u
     size_t index = 0;
     bool isValidNum = parseIndex(path[depth], index);
 
-    // Ако пътят посочва съществуващ индекс в масива
     if (isValidNum && index < array.size() && array[index] != nullptr) {
         if (depth == path.size() - 1) {
             delete array[index];
@@ -118,11 +116,9 @@ void JsonArray::createPath(std::vector<std::string> path, JsonValue* newValue, u
         return;
     }
 
-    // Ако сме на последното ниво, добавяме новата стойност в края на масива
     if (depth == path.size() - 1) {
         array.push_back(newValue);
     } else {
-        // Създаваме междинен обект и продължаваме по пътя
         JsonObject* newObject = new JsonObject();
         newObject->setName(path[depth]);
         array.push_back(newObject);

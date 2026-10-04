@@ -105,18 +105,14 @@ void JsonObject::createPath(std::vector<std::string> path, JsonValue *newValue, 
 
     std::string curr = path[depth];
 
-    // Проверяваме дали текущият ключ вече съществува
     for (size_t i = 0; i < pairs.size(); i++) {
         if (pairs[i] != nullptr && pairs[i]->name == curr) {
-            // Ако сме на последната стъпка, подменяме стойността
             if (depth == path.size() - 1) {
                 delete pairs[i]->value;
                 pairs[i]->value = newValue;
                 return;
             }
 
-            // Междинна стъпка: ако съществуващият елемент не е обект или масив,
-            // го превръщаме в нов JsonObject, за да можем да продължим пътя надолу
             JsonObject* asObject = dynamic_cast<JsonObject*>(pairs[i]->value);
             JsonArray* asArray = dynamic_cast<JsonArray*>(pairs[i]->value);
 
@@ -131,16 +127,13 @@ void JsonObject::createPath(std::vector<std::string> path, JsonValue *newValue, 
         }
     }
 
-    // Ако ключът НЕ съществува:
     Pair* newPair = new Pair();
     newPair->name = curr;
 
     if (depth == path.size() - 1) {
-        // Последна стъпка от пътя — закачаме самата стойност
         newPair->value = newValue;
         pairs.push_back(newPair);
     } else {
-        // Междинна стъпка — създаваме нов празен JsonObject и продължаваме по пътя
         JsonObject* intermediateObject = new JsonObject();
         newPair->value = intermediateObject;
         pairs.push_back(newPair);
@@ -157,7 +150,6 @@ void JsonObject::deletePath(std::vector<std::string> path, unsigned depth) {
 
     for (size_t i = 0; i < pairs.size(); i++) {
         if (pairs[i] != nullptr && pairs[i]->name == curr) {
-            // Ако сме на последното ниво от пътя — изтриваме самата двойка
             if (depth == path.size() - 1) {
                 delete pairs[i]->value;
                 delete pairs[i];
@@ -165,12 +157,9 @@ void JsonObject::deletePath(std::vector<std::string> path, unsigned depth) {
                 return;
             }
 
-            // Междинно ниво: проверяваме дали стойността съществува и е контейнер
             if (pairs[i]->value == nullptr) {
                 throw std::invalid_argument("Path points to null value at: " + curr);
             }
-
-            // Продължаваме рекурсивно надолу по дървото
             pairs[i]->value->deletePath(path, depth + 1);
             return;
         }
